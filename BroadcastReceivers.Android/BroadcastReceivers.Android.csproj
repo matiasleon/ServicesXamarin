@@ -67,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recievers\MyBootReceiver.cs" />
     <Compile Include="MyBackgroundTaskService.cs" />
+    <Compile Include="Scheduler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
