@@ -9,6 +9,7 @@ using Android.OS;
 using BroadcastReceivers.Droid.Recievers;
 using Android.Content;
 using Android.App.Job;
+using Android.Support.Design.Widget;
 
 namespace BroadcastReceivers.Droid
 {
@@ -27,22 +28,49 @@ namespace BroadcastReceivers.Droid
 
             // Inicializar servicios, receivers, schedulers, alarms ??
             // orquestador .....
+            // Al ser na tablet de la app no se puede eliminar del listado de tareas, con
+            // registrar los eventos alcanza. 
+            RegisterReceivers();
+            RegisterJob();
+
 
             LoadApplication(new App());
+        }
+
+        private void RegisterReceivers()
+        {
+            var receiver = new MyBootReceiver();
+            RegisterReceiver(receiver, new IntentFilter("android.intent.action.ACTION_BOOT_COMPLETED"));
+            RegisterReceiver(receiver, new IntentFilter("android.intent.action.QUICKBOOT_POWERON"));
+            RegisterReceiver(receiver, new IntentFilter("android.intent.action.SCREEN_ON"));
         }
 
         /// <summary>
         /// Inicializa job...alternativa a Alarm
         /// </summary>
-        private void SetJobScheduler()
+        private void RegisterJob()
         {
             // Se crea jobInfo, metada que usa el job scheduler para ejecutar el servicio
             var uniqueId = 1000;
             var javaClass = Java.Lang.Class.FromType(typeof(Scheduler));
-            var jobInfo = new JobInfo.Builder(uniqueId, new ComponentName(this, javaClass));
-            jobInfo.Build();
+            var jobInfoBuilder = new JobInfo.Builder(uniqueId, new ComponentName(this, javaClass));
+            var jobInfo = jobInfoBuilder
+                .SetPersisted(true)
+                .SetRequiresBatteryNotLow(false)
+                .SetPeriodic(900000)
+                .Build();
 
+            var jobScheduler = (JobScheduler)GetSystemService(JobSchedulerService);
+            var scheduleResult = jobScheduler.Schedule(jobInfo);
 
+            if (JobScheduler.ResultSuccess == scheduleResult)
+            {
+                Toast.MakeText(this, "Job inicializado con exito", ToastLength.Long).Show();
+            }
+            else
+            {
+                Toast.MakeText(this, "Error al inicializar job", ToastLength.Long).Show();
+            }
         }
 
         /// <summary>

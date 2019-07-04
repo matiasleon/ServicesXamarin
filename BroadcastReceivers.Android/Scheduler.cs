@@ -6,7 +6,7 @@ using Android.Widget;
 
 namespace BroadcastReceivers.Droid
 {
-	[Service(Name = "com.hexacta.broadcastreceivers.Scheduler",
+	[Service(Name = "BroadcastReceivers.Droid.Scheduler",
 			 Permission = "android.permission.BIND_JOB_SERVICE")]
 	public class Scheduler : JobService
 	{
