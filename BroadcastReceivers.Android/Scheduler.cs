@@ -3,6 +3,7 @@ using Android.App;
 using Android.App.Job;
 using Android.Content;
 using Android.Widget;
+using Microsoft.AppCenter.Analytics;
 
 namespace BroadcastReceivers.Droid
 {
@@ -19,8 +20,10 @@ namespace BroadcastReceivers.Droid
 			var myIntent = new Intent(this.BaseContext, typeof(MainActivity));
 			myIntent.AddFlags(ActivityFlags.NewTask);
 			this.BaseContext.StartActivity(myIntent);
-			Toast.MakeText(this.BaseContext, "scheduler / boot / on screen on", ToastLength.Long).Show();
-			JobFinished(@params, false);
+            var date = DateTime.Now;
+            var msg = string.Format("Schedueler Job ejecutado: {0}", date.ToString());
+            Analytics.TrackEvent(msg);
+            JobFinished(@params, false);
 
 			return false;
 		}
@@ -31,3 +34,4 @@ namespace BroadcastReceivers.Droid
 		}
 	}
 }
+    

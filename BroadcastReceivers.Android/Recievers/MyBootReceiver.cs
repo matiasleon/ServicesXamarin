@@ -2,6 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.Widget;
+using Microsoft.AppCenter.Analytics;
 
 namespace BroadcastReceivers.Droid.Recievers
 {
@@ -20,7 +21,9 @@ namespace BroadcastReceivers.Droid.Recievers
             var myIntent = new Intent(context, typeof(MainActivity));
             myIntent.AddFlags(ActivityFlags.NewTask);
             context.StartActivity(myIntent);
-            Toast.MakeText(context, "Alarma / boot / on screen on", ToastLength.Long).Show();
+            var date = DateTime.Now;
+            var msg = string.Format("Receiver ejecutado: {0}", date.ToString());
+            Analytics.TrackEvent(msg);
         }
 
     }

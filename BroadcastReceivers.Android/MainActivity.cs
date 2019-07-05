@@ -10,6 +10,9 @@ using BroadcastReceivers.Droid.Recievers;
 using Android.Content;
 using Android.App.Job;
 using Android.Support.Design.Widget;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace BroadcastReceivers.Droid
 {
@@ -25,6 +28,9 @@ namespace BroadcastReceivers.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+
+            AppCenter.Start("4ce296f3-3a4d-4616-8d7a-2e0e9e7b9036",
+                   typeof(Analytics), typeof(Crashes));
 
             // Inicializar servicios, receivers, schedulers, alarms ??
             // orquestador .....
