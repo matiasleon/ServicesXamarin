@@ -8,7 +8,6 @@ namespace BroadcastReceivers.Droid.Recievers
 {
     [BroadcastReceiver(Enabled = true, Exported =true)]
     [IntentFilter(new[] { Android.Content.Intent.ActionBootCompleted,
-                         "android.intent.action.QUICKBOOT_POWERON",
                           "android.intent.action.SCREEN_ON"})]
     public class MyBootReceiver : BroadcastReceiver
     {
@@ -25,7 +24,6 @@ namespace BroadcastReceivers.Droid.Recievers
             var msg = string.Format("Receiver ejecutado: {0}", date.ToString());
             Analytics.TrackEvent(msg);
         }
-
     }
 }
     

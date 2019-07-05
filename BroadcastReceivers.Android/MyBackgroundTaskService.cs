@@ -1,9 +1,11 @@
 ﻿using System;
 using Android.App;
+using Android.App.Job;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.App;
+using Android.Widget;
 using BroadcastReceivers.Droid.Recievers;
 
 namespace BroadcastReceivers.Droid
@@ -16,6 +18,10 @@ namespace BroadcastReceivers.Droid
         private const int SERVICE_RUNNING_NOTIFICATION_ID = 109900;
 
         private const string CHANNEL_ID = "mychannelId";
+
+        private JobScheduler jobScheduler { get; set; }
+
+        private const int JOB_ID = 1000;
 
         public MyBackgroundTaskService()
         {
@@ -32,13 +38,14 @@ namespace BroadcastReceivers.Droid
             var receiver = new MyBootReceiver();
             _myBootReceiver = receiver;
 
-            Notification notification = CreateNotification();
-            StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
-
+            //Notification notification = CreateNotification();
+            //StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
+           
             // Registros servicios
             RegisterReceiver(receiver, new IntentFilter("android.intent.action.ACTION_BOOT_COMPLETED"));
             RegisterReceiver(receiver, new IntentFilter("android.intent.action.QUICKBOOT_POWERON"));
             RegisterReceiver(receiver, new IntentFilter("android.intent.action.SCREEN_ON"));
+            //RegisterJob();
 
             return StartCommandResult.Sticky;
         }
@@ -72,6 +79,30 @@ namespace BroadcastReceivers.Droid
             notificationManager.Notify(notificationId, notification);
 
             return notification;
+        }
+
+        private void RegisterJob()
+        {
+            // Se crea jobInfo, metada que usa el job scheduler para ejecutar el servicio
+            var javaClass = Java.Lang.Class.FromType(typeof(Scheduler));
+            var jobInfoBuilder = new JobInfo.Builder(JOB_ID, new ComponentName(this, javaClass));
+            var jobInfo = jobInfoBuilder
+                .SetPersisted(true)
+                .SetRequiresBatteryNotLow(false)
+                .SetPeriodic(900000)
+                .Build();
+
+            jobScheduler = (JobScheduler)GetSystemService(JobSchedulerService);
+            var scheduleResult = jobScheduler.Schedule(jobInfo);
+
+            if (JobScheduler.ResultSuccess == scheduleResult)
+            {
+                Toast.MakeText(this, "Job inicializado con exito", ToastLength.Long).Show();
+            }
+            else
+            {
+                Toast.MakeText(this, "Error al inicializar job", ToastLength.Long).Show();
+            }
         }
     }
 }
