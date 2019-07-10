@@ -17,5 +17,10 @@ namespace BroadcastReceivers
         {
             InitializeComponent();
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
+        }
     }
 }

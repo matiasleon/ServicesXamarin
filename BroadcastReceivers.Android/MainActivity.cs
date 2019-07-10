@@ -19,7 +19,6 @@ namespace BroadcastReceivers.Droid
     [Activity(Label = "BroadcastReceivers", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        private MyBootReceiver myBootReceiver { get; set; }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -36,10 +35,13 @@ namespace BroadcastReceivers.Droid
 
             // Al ser na tablet de la app no se puede eliminar del listado de tareas, con
             // registrar los eventos alcanza. 
-           
-            var service = new Intent(this, typeof(MyBackgroundTaskService));
-            service.AddFlags(ActivityFlags.NewTask);
-            this.StartService(service);
+            var receiver = new MyBootReceiver();
+            RegisterReceiver(receiver, new IntentFilter("android.intent.action.ACTION_BOOT_COMPLETED"));
+            RegisterReceiver(receiver, new IntentFilter("android.intent.action.QUICKBOOT_POWERON"));
+            RegisterReceiver(receiver, new IntentFilter("android.intent.action.SCREEN_ON"));
+
+            SetAlarm();
+
             LoadApplication(new App());
         }
        
@@ -63,19 +65,22 @@ namespace BroadcastReceivers.Droid
         }
 
         /// <summary>
-        /// Setea alarma
+        /// Setea alarma 
         /// </summary>
-        private void SetAlarm()
+        private void SetAlarm( )
         {
-            // intetn q va a ejcutar ante un determinado tiempo
+            // intent q se va a ejecutar ante un determinado tiempo
             var intent = new Intent(this, typeof(MyBootReceiver));
             var pendingIntent = PendingIntent.GetBroadcast(this, 10, intent, PendingIntentFlags.Immutable);
 
-
             var alarmManager = GetSystemService(Context.AlarmService) as AlarmManager;
-            var twoMinutes = 120000;
 
-            alarmManager.Set(AlarmType.RtcWakeup, twoMinutes, pendingIntent);
+            var time = DateTime.Now;
+            Java.Util.Calendar calendar = Java.Util.Calendar.Instance;
+            calendar.TimeInMillis = Java.Lang.JavaSystem.CurrentTimeMillis();
+            calendar.Set(time.Year, time.Month, time.Day, time.Hour, time.Minute + 4, time.Second);
+
+            alarmManager.SetRepeating(AlarmType.RtcWakeup, calendar.TimeInMillis, AlarmManager.IntervalDay, pendingIntent);
 
             // que pasa si elimina de la barra de tareas la app... se tiene q inicializar un un servicio de 1er plano.
             // se ejecute una sla vez ante una determinada hora.
