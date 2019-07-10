@@ -17,6 +17,7 @@ namespace BroadcastReceivers.Droid
 
 		public override bool OnStartJob(JobParameters @params)
 		{
+            
 			var myIntent = new Intent(this.BaseContext, typeof(MainActivity));
 			myIntent.AddFlags(ActivityFlags.NewTask);
 			this.BaseContext.StartActivity(myIntent);

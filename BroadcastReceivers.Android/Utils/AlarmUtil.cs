@@ -24,24 +24,15 @@ namespace BroadcastReceivers.Droid.Utils
 
             var alarmManager = context.GetSystemService(Context.AlarmService) as AlarmManager;
 
-            // Setear alarma a a las 7 AM desde dnd estoy parado.
-            var now = DateTime.Now;
+            //Setear alarma a a las 7 AM desde dnd estoy parado.
+           var now = DateTime.Now;
             var futureDate = new DateTime(now.Year, now.Month, now.Day + 1, 7, 01, 0);
-            var futureDateMilis =(long) futureDate.ToUniversalTime().Subtract(
+            var futureDateMilis = (long)futureDate.ToUniversalTime().Subtract(
                 new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
 
-            long ringTime = JavaSystem.CurrentTimeMillis() + (long)TimeSpan.FromMinutes(2).TotalMilliseconds;
+            //long ringTime = JavaSystem.CurrentTimeMillis() + (long)TimeSpan.FromMinutes(2).TotalMilliseconds;
 
             alarmManager.SetRepeating(AlarmType.RtcWakeup, futureDateMilis, AlarmManager.IntervalDay, pendingIntent);
-
-        }
-
-        private void Start(Context context)
-        {
-            var receiver = new MyBootReceiver();
-            context.RegisterReceiver(receiver, new IntentFilter("android.intent.action.ACTION_BOOT_COMPLETED"));
-            context.RegisterReceiver(receiver, new IntentFilter("android.intent.action.QUICKBOOT_POWERON"));
-            context.RegisterReceiver(receiver, new IntentFilter("android.intent.action.SCREEN_ON"));
         }
     }
 }

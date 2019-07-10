@@ -22,7 +22,6 @@ namespace BroadcastReceivers.Droid.Recievers
                 var myIntent = new Intent(context, typeof(MainActivity));
                 myIntent.AddFlags(ActivityFlags.NewTask);
                 context.StartActivity(myIntent);
-
                 RegisterEvent();
             }
             // si esta validado desubscribir de eventos

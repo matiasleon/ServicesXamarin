@@ -75,6 +75,7 @@
     <Compile Include="MyBackgroundTaskService.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="Utils\AlarmUtil.cs" />
+    <Compile Include="Utils\CloseApp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
