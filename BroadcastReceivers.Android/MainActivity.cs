@@ -13,6 +13,9 @@ using Android.Support.Design.Widget;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Java.Util;
+using Java.Lang;
+using BroadcastReceivers.Droid.Utils;
 
 namespace BroadcastReceivers.Droid
 {
@@ -33,14 +36,12 @@ namespace BroadcastReceivers.Droid
             AppCenter.Start("4ce296f3-3a4d-4616-8d7a-2e0e9e7b9036",
                    typeof(Analytics), typeof(Crashes));
 
-            // Al ser na tablet de la app no se puede eliminar del listado de tareas, con
-            // registrar los eventos alcanza. 
             var receiver = new MyBootReceiver();
             RegisterReceiver(receiver, new IntentFilter("android.intent.action.ACTION_BOOT_COMPLETED"));
             RegisterReceiver(receiver, new IntentFilter("android.intent.action.QUICKBOOT_POWERON"));
             RegisterReceiver(receiver, new IntentFilter("android.intent.action.SCREEN_ON"));
 
-            SetAlarm();
+            new AlarmUtil().SetAlarm(this);
 
             LoadApplication(new App());
         }
@@ -63,29 +64,6 @@ namespace BroadcastReceivers.Droid
                 StartService(service);
             }
         }
-
-        /// <summary>
-        /// Setea alarma 
-        /// </summary>
-        private void SetAlarm( )
-        {
-            // intent q se va a ejecutar ante un determinado tiempo
-            var intent = new Intent(this, typeof(MyBootReceiver));
-            var pendingIntent = PendingIntent.GetBroadcast(this, 10, intent, PendingIntentFlags.Immutable);
-
-            var alarmManager = GetSystemService(Context.AlarmService) as AlarmManager;
-
-            var time = DateTime.Now;
-            Java.Util.Calendar calendar = Java.Util.Calendar.Instance;
-            calendar.TimeInMillis = Java.Lang.JavaSystem.CurrentTimeMillis();
-            calendar.Set(time.Year, time.Month, time.Day, time.Hour, time.Minute + 4, time.Second);
-
-            alarmManager.SetRepeating(AlarmType.RtcWakeup, calendar.TimeInMillis, AlarmManager.IntervalDay, pendingIntent);
-
-            // que pasa si elimina de la barra de tareas la app... se tiene q inicializar un un servicio de 1er plano.
-            // se ejecute una sla vez ante una determinada hora.
-        }
-
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

@@ -17,9 +17,19 @@ namespace BroadcastReceivers.Droid.Recievers
 
         public override void OnReceive(Context context, Intent intent)
         {
-            var myIntent = new Intent(context, typeof(MainActivity));
-            myIntent.AddFlags(ActivityFlags.NewTask);
-            context.StartActivity(myIntent);
+            if (!UserState.AnswersValid)
+            {
+                var myIntent = new Intent(context, typeof(MainActivity));
+                myIntent.AddFlags(ActivityFlags.NewTask);
+                context.StartActivity(myIntent);
+
+                RegisterEvent();
+            }
+            // si esta validado desubscribir de eventos
+        }
+
+        private void RegisterEvent()
+        {
             var date = DateTime.Now;
             var msg = string.Format("Receiver ejecutado: {0}", date.ToString());
             Analytics.TrackEvent(msg);

@@ -74,6 +74,7 @@
     <Compile Include="Recievers\MyBootReceiver.cs" />
     <Compile Include="MyBackgroundTaskService.cs" />
     <Compile Include="Scheduler.cs" />
+    <Compile Include="Utils\AlarmUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -105,6 +106,7 @@
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
     <Folder Include="Recievers\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BroadcastReceivers\BroadcastReceivers.csproj">

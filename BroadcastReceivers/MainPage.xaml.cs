@@ -22,5 +22,11 @@ namespace BroadcastReceivers
         {
             return true;
         }
+
+        void Handle_Toggled(object sender, Xamarin.Forms.ToggledEventArgs e)
+        {
+            var userValue = e.Value;
+            UserState.AnswersValid = userValue;
+        }
     }
 }
