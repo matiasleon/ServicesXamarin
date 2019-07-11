@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Support.V4.App;
 using Android.Widget;
 using BroadcastReceivers.Droid.Recievers;
+using BroadcastReceivers.Droid.Utils;
 
 namespace BroadcastReceivers.Droid
 {
@@ -23,10 +24,6 @@ namespace BroadcastReceivers.Droid
 
         private const int JOB_ID = 1000;
 
-        public MyBackgroundTaskService()
-        {
-        }
-
         public override IBinder OnBind(Intent intent)
         {
             return null;
@@ -35,38 +32,11 @@ namespace BroadcastReceivers.Droid
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
-            var receiver = new MyBootReceiver();
-            _myBootReceiver = receiver;
-
-            Notification notification = CreateNotification();
-            StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
-           
-            // Registros servicios
-            RegisterReceiver(receiver, new IntentFilter("android.intent.action.ACTION_BOOT_COMPLETED"));
-            RegisterReceiver(receiver, new IntentFilter("android.intent.action.QUICKBOOT_POWERON"));
-            RegisterReceiver(receiver, new IntentFilter("android.intent.action.SCREEN_ON"));
             return StartCommandResult.Sticky;
-        }
-
-        private void SetAlarm()
-        {
-            // intent q va a ejcutar ante un determinado tiempo
-            var intent = new Intent(this, typeof(MyBootReceiver));
-            var pendingIntent = PendingIntent.GetBroadcast(this, 10, intent, PendingIntentFlags.Immutable);
-
-
-            var alarmManager = GetSystemService(Context.AlarmService) as AlarmManager;
-            var twoMinutes = 120000;
-
-            alarmManager.Set(AlarmType.RtcWakeup, twoMinutes, pendingIntent);
-
-            // que pasa si elimina de la barra de tareas la app... se tiene q inicializar un un servicio de 1er plano.
-            // se ejecute una sla vez ante una determinada hora.
         }
 
         public override void OnDestroy()
         {
-            UnregisterReceiver(_myBootReceiver);
             base.OnDestroy();
         }
 

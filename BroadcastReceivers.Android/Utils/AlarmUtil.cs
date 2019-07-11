@@ -19,20 +19,20 @@ namespace BroadcastReceivers.Droid.Utils
         public void SetAlarm(Context context)
         {
             // Intent q se va a ejecutar ante un determinado tiempo
-            var intent = new Intent(context, typeof(MyBootReceiver));
+            var intent = new Intent(context, typeof(AlarmReceiver));
             var pendingIntent = PendingIntent.GetBroadcast(context, 10, intent, PendingIntentFlags.Immutable);
 
             var alarmManager = context.GetSystemService(Context.AlarmService) as AlarmManager;
 
             //Setear alarma a a las 7 AM desde dnd estoy parado.
-           var now = DateTime.Now;
-            var futureDate = new DateTime(now.Year, now.Month, now.Day + 1, 7, 01, 0);
+            var now = DateTime.Now;
+            var futureDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute + 2, 0);
             var futureDateMilis = (long)futureDate.ToUniversalTime().Subtract(
                 new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
 
             //long ringTime = JavaSystem.CurrentTimeMillis() + (long)TimeSpan.FromMinutes(2).TotalMilliseconds;
 
-            alarmManager.SetRepeating(AlarmType.RtcWakeup, futureDateMilis, AlarmManager.IntervalDay, pendingIntent);
+            alarmManager.SetRepeating(AlarmType.RtcWakeup, futureDateMilis, AlarmManager.IntervalFifteenMinutes, pendingIntent);
         }
     }
 }

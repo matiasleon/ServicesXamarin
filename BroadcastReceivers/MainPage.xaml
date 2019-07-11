@@ -6,5 +6,9 @@
             <Label Text="Preguntas contestadas ?"/>
             <Switch x:Name="switch" Toggled="Handle_Toggled"></Switch> 
         </StackLayout>
+        <StackLayout Margin="0,15,0,15">
+            <Label Text="Alarma" FontSize="Medium"></Label>
+            <TimePicker x:Name="timePicker"></TimePicker>
+        </StackLayout>
     </StackLayout>
 </ContentPage>

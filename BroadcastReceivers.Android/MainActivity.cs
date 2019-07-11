@@ -19,7 +19,7 @@ using BroadcastReceivers.Droid.Utils;
 
 namespace BroadcastReceivers.Droid
 {
-    [Activity(Label = "BroadcastReceivers", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "BroadcastReceivers", Icon = "@mipmap/icon", MainLauncher =true, Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
 
@@ -40,29 +40,12 @@ namespace BroadcastReceivers.Droid
             RegisterReceiver(receiver, new IntentFilter("android.intent.action.ACTION_BOOT_COMPLETED"));
             RegisterReceiver(receiver, new IntentFilter("android.intent.action.QUICKBOOT_POWERON"));
             RegisterReceiver(receiver, new IntentFilter("android.intent.action.SCREEN_ON"));
+            RegisterReceiver(receiver, new IntentFilter(Intent.ActionLockedBootCompleted));
+            RegisterReceiver(receiver, new IntentFilter("com.htc.intent.action.QUICKBOOT_POWERON"));
 
-            new AlarmUtil().SetAlarm(this);
+            new AlarmUtil().SetAlarm(Application.Context);
 
             LoadApplication(new App());
-        }
-       
-        /// <summary>
-        /// Inicializa servicio en 1er plano
-        /// </summary>
-        private void StartForegroundService()
-        {
-            var service = new Intent(this, typeof(MyBackgroundTaskService));
-            service.AddFlags(ActivityFlags.NewTask);
-
-            // dependiendo la version de android, se modifica la forma de inicializacion
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
-            {
-                StartForegroundService(service);
-            }
-            else
-            {
-                StartService(service);
-            }
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

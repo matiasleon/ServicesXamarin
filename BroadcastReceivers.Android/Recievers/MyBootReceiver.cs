@@ -6,9 +6,12 @@ using Microsoft.AppCenter.Analytics;
 
 namespace BroadcastReceivers.Droid.Recievers
 {
-    [BroadcastReceiver(Enabled = true, Exported =true)]
+    [BroadcastReceiver(Enabled = true, Exported =true, DirectBootAware = true)]
     [IntentFilter(new[] { Android.Content.Intent.ActionBootCompleted,
-                          "android.intent.action.SCREEN_ON"})]
+                          Intent.ActionLockedBootCompleted,
+                          "android.intent.action.SCREEN_ON",
+                          "android.intent.action.QUICKBOOT_POWERON",
+                          "com.htc.intent.action.QUICKBOOT_POWERON" }, Priority = (int)IntentFilterPriority.HighPriority)]
     public class MyBootReceiver : BroadcastReceiver
     {
         public MyBootReceiver()
@@ -24,7 +27,6 @@ namespace BroadcastReceivers.Droid.Recievers
                 context.StartActivity(myIntent);
                 RegisterEvent();
             }
-            // si esta validado desubscribir de eventos
         }
 
         private void RegisterEvent()
