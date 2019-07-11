@@ -76,6 +76,7 @@
     <Compile Include="Scheduler.cs" />
     <Compile Include="Utils\AlarmUtil.cs" />
     <Compile Include="Recievers\AlarmReceiver.cs" />
+    <Compile Include="Utils\NotificationFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

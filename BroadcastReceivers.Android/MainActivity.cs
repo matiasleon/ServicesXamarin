@@ -36,16 +36,24 @@ namespace BroadcastReceivers.Droid
             AppCenter.Start("4ce296f3-3a4d-4616-8d7a-2e0e9e7b9036",
                    typeof(Analytics), typeof(Crashes));
 
-            var receiver = new MyBootReceiver();
-            RegisterReceiver(receiver, new IntentFilter("android.intent.action.ACTION_BOOT_COMPLETED"));
-            RegisterReceiver(receiver, new IntentFilter("android.intent.action.QUICKBOOT_POWERON"));
-            RegisterReceiver(receiver, new IntentFilter("android.intent.action.SCREEN_ON"));
-            RegisterReceiver(receiver, new IntentFilter(Intent.ActionLockedBootCompleted));
-            RegisterReceiver(receiver, new IntentFilter("com.htc.intent.action.QUICKBOOT_POWERON"));
-
-            new AlarmUtil().SetAlarm(Application.Context);
+            StartServices(this);
 
             LoadApplication(new App());
+        }
+
+        private void StartServices(Context context)
+        {
+            var intent = new Intent(context, typeof(MyBackgroundTaskService));
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
+            {
+                context.StartForegroundService(intent);
+            }
+            else
+            {
+                context.StartService(intent);
+            }
+
+            new AlarmUtil().SetAlarm(Application.Context);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
