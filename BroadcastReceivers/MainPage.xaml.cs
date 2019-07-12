@@ -24,5 +24,15 @@ namespace BroadcastReceivers
             var userValue = e.Value;
             UserState.AnswersValid = userValue;
         }
+
+        void StartAnimation_Clicked(object sender, System.EventArgs e)
+        {
+            LottieView.IsPlaying = true;
+        }
+
+        void StopAnimation_Clicked(object sender, System.EventArgs e)
+        {
+            LottieView.IsPlaying = false;
+        }
     }
 }

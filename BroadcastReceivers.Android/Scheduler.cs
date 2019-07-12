@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Android.App;
 using Android.App.Job;
 using Android.Content;
@@ -17,16 +18,18 @@ namespace BroadcastReceivers.Droid
 
 		public override bool OnStartJob(JobParameters @params)
 		{
-            
-			var myIntent = new Intent(this.BaseContext, typeof(MainActivity));
-			myIntent.AddFlags(ActivityFlags.NewTask);
-			this.BaseContext.StartActivity(myIntent);
-            var date = DateTime.Now;
-            var msg = string.Format("Schedueler Job ejecutado: {0}", date.ToString());
-            Analytics.TrackEvent(msg);
-            JobFinished(@params, false);
+            Task.Run(async () => {
 
-			return false;
+                
+                await Task.Delay(5000);
+                var date = DateTime.Now;
+                var msg = string.Format("Schedueler Job ejecutado: {0}", date.ToString());
+                Toast.MakeText(Application.Context, msg, ToastLength.Long).Show();
+                JobFinished(@params, false);
+
+            });
+
+			return true;
 		}
 
 		public override bool OnStopJob(JobParameters @params)

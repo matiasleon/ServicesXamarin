@@ -1,14 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="BroadcastReceivers.MainPage">
-    <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
-        <Label Text="POC Seguridad" Margin="15" FontSize="Medium" />
-        <StackLayout Orientation="Horizontal" Spacing="20">
-            <Label Text="Preguntas contestadas ?"/>
-            <Switch x:Name="switch" Toggled="Handle_Toggled"></Switch> 
-        </StackLayout>
-        <StackLayout Margin="0,15,0,15">
-            <Label Text="Alarma" FontSize="Medium"></Label>
-            <TimePicker x:Name="timePicker"></TimePicker>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="BroadcastReceivers.MainPage">
+    <StackLayout>
+        <Label Text="POC Seguridad" Margin="15" FontSize="Large" />
+        <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+            <lottie:AnimationView x:Name="LottieView" 
+                                  Animation="check-mark-success.json" 
+                                  Loop="True" 
+                                  AutoPlay="False" 
+                                  VerticalOptions="FillAndExpand" 
+                                  HorizontalOptions="FillAndExpand" />
+            <Button Text="Empezar animacion" Clicked="StartAnimation_Clicked"></Button>
+            <Button Text="Detener animacion" Clicked="StopAnimation_Clicked"></Button>
+            <StackLayout Orientation="Horizontal" Spacing="20">
+                <Label Text="Preguntas contestadas ?" />
+                <Switch x:Name="switch" Toggled="Handle_Toggled">
+                </Switch>
+            </StackLayout>
+            <StackLayout Margin="0,15,0,15">
+                <Label Text="Alarma" FontSize="Medium">
+                </Label>
+                <TimePicker x:Name="timePicker">
+                </TimePicker>
+            </StackLayout>
         </StackLayout>
     </StackLayout>
 </ContentPage>

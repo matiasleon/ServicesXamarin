@@ -135,4 +135,7 @@
       <Name>BroadcastReceivers</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\check-mark-success.json" />
+  </ItemGroup>
 </Project>

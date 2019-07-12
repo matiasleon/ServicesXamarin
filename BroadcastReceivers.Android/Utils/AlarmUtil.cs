@@ -26,13 +26,13 @@ namespace BroadcastReceivers.Droid.Utils
 
             //Setear alarma a a las 7 AM desde dnd estoy parado.
             var now = DateTime.Now;
-            var futureDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute + 2, 0);
+            var futureDate = new DateTime(now.Year, now.Month, now.Day + 1, 14, 1,0);
             var futureDateMilis = (long)futureDate.ToUniversalTime().Subtract(
                 new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
 
             //long ringTime = JavaSystem.CurrentTimeMillis() + (long)TimeSpan.FromMinutes(2).TotalMilliseconds;
 
-            alarmManager.SetRepeating(AlarmType.RtcWakeup, futureDateMilis, AlarmManager.IntervalFifteenMinutes, pendingIntent);
+            alarmManager.SetRepeating(AlarmType.RtcWakeup, futureDateMilis, AlarmManager.IntervalDay, pendingIntent);
         }
     }
 }
